@@ -112,3 +112,16 @@ class TagTests(TestCase):
         tag.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data.get("name"), tag.name)
+
+    def test_delete_patch(self):
+        """Test delete tag api"""
+        tag = create_tag()
+        url = detail_url(tag.id)
+
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

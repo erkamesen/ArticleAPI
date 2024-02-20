@@ -136,3 +136,16 @@ class PostTests(TestCase):
         post.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data.get("title"), post.title)
+
+    def test_delete_post(self):
+        """Test delete post api"""
+        post = create_post()
+        url = detail_url(post.id)
+
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)

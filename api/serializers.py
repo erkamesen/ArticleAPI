@@ -85,11 +85,11 @@ class PostSerializer(serializers.Serializer):
             instance.author = get_object_or_404(Author, id=author_id)
 
         if tag_ids is not None:
+            instance.tags.clear()
             tags = Tag.objects.filter(id__in=tag_ids)
             instance.tags.set(tags)
 
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-
+        instance.title = validated_data.get("title", instance.title)
+        instance.content = validated_data.get("content", instance.content)
         instance.save()
         return instance
