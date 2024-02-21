@@ -51,15 +51,16 @@ class PostTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
 
-    def test_create_post_with_correct_credentials(self):  # Positive
-        """Test create post succesfully"""
-        create_author()
-        create_tag()
+    def test_create_post_with_correct_credentials(self):
+        """Test create post successfully"""
+        author = create_author(email="test@example.com", name="Test", surname="User", phone="123456789")
+        tag = create_tag(name="Test Tag")
+
         payload = {
             "title": "Test Title",
             "content": "Test Content",
-            "author_id": 1,
-            "tag_ids": [1],
+            "author": author.id,
+            "tags": [tag.id],
         }
 
         res = self.client.post(LIST_POST_URL, data=payload, format="json")
@@ -72,7 +73,7 @@ class PostTests(TestCase):
         payload = {
             "title": "Test Title",
             "content": "Test Content",
-            "tag_ids": [1],
+            "tags": [1],
         }
 
         res = self.client.post(LIST_POST_URL, data=payload, format="json")
@@ -98,8 +99,8 @@ class PostTests(TestCase):
         payload = {
             "title": "New Title",
             "content": "New Content",
-            "author_id": 1,
-            "tag_ids": [1],
+            "author": 1,
+            "tags": [1],
         }
 
         res = self.client.put(url, data=payload)

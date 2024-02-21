@@ -115,6 +115,7 @@ class PostAPIView(APIView):
         return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
+        print(request.data)
         serializer = PostSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
