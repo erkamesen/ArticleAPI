@@ -9,7 +9,7 @@ from api.models import Tag
 from rest_framework import status
 
 
-LIST_POST_URL = reverse("api:tags")
+LIST_POST_URL = reverse("api:tags-list")
 
 
 def create_tag(name="test_tag"):

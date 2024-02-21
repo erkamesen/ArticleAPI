@@ -1,22 +1,14 @@
 from api import views
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
+
+router = DefaultRouter()
+router.register("posts", views.PostViewSet, basename="posts")
+router.register("authors", views.AuthorViewSet, basename="authors")
+router.register("tags", views.TagViewSet, basename="tags")
 
 app_name = "api"
 urlpatterns = [
-
-    path('', view=views.PostAPIView.as_view(), name="posts"),
-    path('tags/', view=views.TagAPIView.as_view(), name="tags"),
-    path('authors/', view=views.AuthorAPIView.as_view(), name="authors"),
-
-
-    path('<int:pk>/', view=views.PostDetailAPIView.as_view(),
-         name="posts-detail"),
-
-    path('tags/<int:pk>/', view=views.TagDetailAPIView.as_view(),
-         name="tags-detail"),
-
-    path('authors/<int:pk>/',
-         view=views.AuthorDetailAPIView.as_view(),
-         name="authors-detail"),
+    path("", include(router.urls))
 ]

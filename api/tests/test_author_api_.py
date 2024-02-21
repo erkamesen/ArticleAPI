@@ -9,7 +9,7 @@ from api.models import Author
 from rest_framework import status
 
 
-LIST_POST_URL = reverse("api:authors")
+LIST_POST_URL = reverse("api:authors-list")
 
 
 def create_author(name="testname", surname="testsurname",
