@@ -9,7 +9,7 @@ from api.models import Post, Author, Tag
 from rest_framework import status
 
 
-LIST_POST_URL = reverse("api:posts")
+LIST_POST_URL = reverse("api:posts-list")
 
 
 def create_author(name="testname", surname="testsurname",
@@ -41,6 +41,9 @@ class PostTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        create_author(name="BaseName", surname="BaseSurname",
+                      email="base@mail.com", phone="12312312")
+        create_tag(name="BaseTag")
 
     def test_list_posts(self):
         """Test for list all posts in database"""
