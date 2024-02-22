@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 from api.models import Tag
 from rest_framework import status
-
+from django.contrib.auth import get_user_model
 
 LIST_POST_URL = reverse("api:tags-list")
 
@@ -26,11 +26,19 @@ def detail_url(tag_id):
     return reverse("api:tags-detail", args=[tag_id,])
 
 
+def create_user():
+    return get_user_model().objects.create_user(username="testUser",
+                                                email="test@mail.com",
+                                                password="testPass123")
+
+
 class TagTests(TestCase):
     """Tests for TAG model"""
 
     def setUp(self):
         self.client = APIClient()
+        user = create_user()
+        self.client.force_authenticate(user=user)
 
     def test_list_tags(self):
         """Test for list all tags in database"""
