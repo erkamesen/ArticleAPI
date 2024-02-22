@@ -7,6 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 from api.models import Author
 from rest_framework import status
+from django.contrib.auth import get_user_model
 
 
 LIST_POST_URL = reverse("api:authors-list")
@@ -27,6 +28,12 @@ def create_authors(lim=5):
     Author.objects.bulk_create(authors)
 
 
+def create_user():
+    return get_user_model().objects.create_user(username="testUser",
+                                                email="test@mail.com",
+                                                password="testPass123")
+
+
 def detail_url(author_id):
     return reverse("api:authors-detail", args=[author_id,])
 
@@ -36,6 +43,8 @@ class AuthorTests(TestCase):
 
     def setUp(self):
         self.client = APIClient()
+        user = create_user()
+        self.client.force_authenticate(user=user)
 
     def test_list_authors(self):
         """Test for list all authors in database"""

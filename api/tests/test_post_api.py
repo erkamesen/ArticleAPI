@@ -7,7 +7,7 @@ from django.test import TestCase
 from django.urls import reverse
 from api.models import Post, Author, Tag
 from rest_framework import status
-
+from django.contrib.auth import get_user_model
 
 LIST_POST_URL = reverse("api:posts-list")
 
@@ -32,6 +32,12 @@ def create_post(title="test_title", content="test_content"):
     return post
 
 
+def create_user():
+    return get_user_model().objects.create_user(username="testUser",
+                                                email="test@mail.com",
+                                                password="testPass123")
+
+
 def detail_url(post_id):
     return reverse("api:posts-detail", args=[post_id,])
 
@@ -44,6 +50,8 @@ class PostTests(TestCase):
         create_author(name="BaseName", surname="BaseSurname",
                       email="base@mail.com", phone="12312312")
         create_tag(name="BaseTag")
+        user = create_user()
+        self.client.force_authenticate(user=user)
 
     def test_list_posts(self):
         """Test for list all posts in database"""

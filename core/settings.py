@@ -37,10 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api.apps.ApiConfig',
+
 
     'rest_framework',
     'drf_spectacular',
+    'knox',
+
+    'api.apps.ApiConfig',
+    'authentication.apps.AuthenticationConfig',
 ]
 
 MIDDLEWARE = [
@@ -129,7 +133,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FRAMEWORK = {
 
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',
+                                       # 'rest_framework.authentication.SessionAuthentication' # For web client
+                                       ),
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated', ),
 }
 
 SPECTACULAR_SETTINGS = {
