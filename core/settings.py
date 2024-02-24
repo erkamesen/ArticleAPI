@@ -130,17 +130,38 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# settings.py içinde
 REST_FRAMEWORK = {
-
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',
-                                       # 'rest_framework.authentication.SessionAuthentication' # For web client
-                                       ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'knox.auth.TokenAuthentication',  # Knox için doğru sınıf
+
+    ),
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated', ),
+    
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+        ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '5/minute',
+        "user": '100/minute',
+        },
+    
 }
+
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Article API',
     'DESCRIPTION': 'Artice API for POSTMAN Tests',
     'VERSION': '1.0.0',
+    "SCHEMA_COERCE_PATH_PK_SUFFIX": False,
+    'EXTENSIONS': {
+        'AUTHENTICATION': [
+            'path.to.your.KnoxTokenScheme'
+        ],
+    },
+    "SWAGGER_UI_SETTINGS": {
+        "persistAuthorization": True,
+    },
 }

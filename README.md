@@ -1,4 +1,4 @@
-# Artice API
+# Article API
 
 > *Used for Postman Testing & Implement Swagger UI*
 
